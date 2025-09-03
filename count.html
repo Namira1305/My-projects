@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Countdown Timer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      text-align: center;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    input {
+      padding: 10px;
+      font-size: 16px;
+      width: 80px;
+      margin: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #0078D4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #display {
+      margin-top: 20px;
+      font-size: 24px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Countdown Timer</h1>
+    <div>
+      <input type="number" id="hoursInput" placeholder="Hours">
+      <input type="number" id="minutesInput" placeholder="Minutes">
+      <input type="number" id="secondsInput" placeholder="Seconds">
+    </div>
+    <button onclick="startCountdown()">Start</button>
+    <div id="display">Time left: 00:00:00</div>
+  </div>
+
+  <script>
+    let countdown;
+
+    function startCountdown() {
+      clearInterval(countdown);
+
+      const hours = parseInt(document.getElementById("hoursInput").value) || 0;
+      const minutes = parseInt(document.getElementById("minutesInput").value) || 0;
+      const seconds = parseInt(document.getElementById("secondsInput").value) || 0;
+      let totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+      if (totalSeconds <= 0) {
+        alert("Please enter a valid time greater than 0.");
+        return;
+      }
+
+      const display = document.getElementById("display");
+      updateDisplay(totalSeconds);
+
+      countdown = setInterval(() => {
+        totalSeconds--;
+        updateDisplay(totalSeconds);
+
+        if (totalSeconds <= 0) {
+          clearInterval(countdown);
+          display.textContent = "Time's up!";
+        }
+      }, 1000);
+    }
+
+    function updateDisplay(totalSeconds) {
+      const hrs = Math.floor(totalSeconds / 3600);
+      const mins = Math.floor((totalSeconds % 3600) / 60);
+      const secs = totalSeconds % 60;
+      const formatted = `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      document.getElementById("display").textContent = `Time left: ${formatted}`;
+    }
+  </script>
+</body>
+</html>
